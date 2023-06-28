@@ -27,7 +27,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests
-        run: python manage.py test
+        run:
+          cd boite_a_idees
+          python manage.py test
 
       - name: Login via Azure CLI
         uses: azure/login@v1
@@ -41,6 +43,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
+          cd boite_a_idees
           docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
 
@@ -53,8 +56,6 @@ jobs:
           registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: test_cicd_django_app
+          name: aci-sampleapp
           location: 'west us'
-
-
 
